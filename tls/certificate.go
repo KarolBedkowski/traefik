@@ -16,9 +16,10 @@ import (
 var (
 	// MinVersion Map of allowed TLS minimum versions
 	MinVersion = map[string]uint16{
-		"VersionTLS10": tls.VersionTLS10,
-		"VersionTLS11": tls.VersionTLS11,
-		"VersionTLS12": tls.VersionTLS12,
+		`VersionSSL30`: tls.VersionSSL30,
+		`VersionTLS10`: tls.VersionTLS10,
+		`VersionTLS11`: tls.VersionTLS11,
+		`VersionTLS12`: tls.VersionTLS12,
 		"VersionTLS13": tls.VersionTLS13,
 	}
 
