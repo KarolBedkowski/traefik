@@ -273,6 +273,15 @@ func createHTTPTransport(globalConfiguration configuration.GlobalConfiguration) 
 		}
 	}
 
+	// configure certificates used in connection to backend servers
+	if globalConfiguration.ClientTLS != nil {
+		if conf, err := globalConfiguration.ClientTLS.CreateTLSConfig(); err == nil {
+			transport.TLSClientConfig = conf
+		} else {
+			return nil, err
+		}
+	}
+
 	err := http2.ConfigureTransport(transport)
 	if err != nil {
 		return nil, err
