@@ -16,9 +16,11 @@ var (
 // captureResponseWriter is a wrapper of type http.ResponseWriter
 // that tracks request status and size
 type captureResponseWriter struct {
-	rw     http.ResponseWriter
-	status int
-	size   int64
+	rw       http.ResponseWriter
+	status   int
+	size     int64
+	body     []byte
+	saveBody bool
 }
 
 func (crw *captureResponseWriter) Header() http.Header {
@@ -31,6 +33,9 @@ func (crw *captureResponseWriter) Write(b []byte) (int, error) {
 	}
 	size, err := crw.rw.Write(b)
 	crw.size += int64(size)
+	if crw.saveBody {
+		crw.body = append(crw.body, b...)
+	}
 	return size, err
 }
 
