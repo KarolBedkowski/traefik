@@ -74,6 +74,10 @@ const (
 	Overhead = "Overhead"
 	// RetryAttempts is the map key used for the amount of attempts the request was retried.
 	RetryAttempts = "RetryAttempts"
+	// RequestBody is map key used for content of request body
+	RequestBody = "RequestBody"
+	// ResponseBody is map key used for content of response
+	ResponseBody = "ResponseBody"
 )
 
 // These are written out in the default case when no config is provided to specify keys of interest.

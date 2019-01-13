@@ -29,6 +29,7 @@ type AccessLog struct {
 	Filters       *AccessLogFilters `json:"filters,omitempty" description:"Access log filters, used to keep only specific access logs" export:"true"`
 	Fields        *AccessLogFields  `json:"fields,omitempty" description:"AccessLogFields" export:"true"`
 	BufferingSize int64             `json:"bufferingSize,omitempty" description:"Number of access log lines to process in a buffered way. Default 0." export:"true"`
+	LogBody       bool              `json:"logBody,omitempty" description:"Log request & response body" export:"false"`
 }
 
 // AccessLogFilters holds filters configuration

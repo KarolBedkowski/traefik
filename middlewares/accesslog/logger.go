@@ -79,7 +79,11 @@ func NewLogHandler(config *types.AccessLog) (*LogHandler, error) {
 
 	switch config.Format {
 	case CommonFormat:
-		formatter = new(CommonLogFormatter)
+		if config.LogBody {
+			formatter = new(CommonLogFormatterWithBody)
+		} else {
+			formatter = new(CommonLogFormatter)
+		}
 	case JSONFormat:
 		formatter = new(logrus.JSONFormatter)
 	default:
@@ -160,7 +164,7 @@ func (l *LogHandler) ServeHTTP(rw http.ResponseWriter, req *http.Request, next h
 
 	var crr *captureRequestReader
 	if req.Body != nil {
-		crr = &captureRequestReader{source: req.Body, count: 0}
+		crr = &captureRequestReader{source: req.Body, count: 0, saveBody: l.config.LogBody}
 		reqWithDataTable.Body = crr
 	}
 
@@ -190,7 +194,7 @@ func (l *LogHandler) ServeHTTP(rw http.ResponseWriter, req *http.Request, next h
 		core[ClientHost] = forwardedFor
 	}
 
-	crw := &captureResponseWriter{rw: rw}
+	crw := &captureResponseWriter{rw: rw, saveBody: l.config.LogBody}
 
 	next.ServeHTTP(crw, reqWithDataTable)
 
@@ -300,6 +304,11 @@ func (l *LogHandler) logTheRoundTrip(logDataTable *LogData, crr *captureRequestR
 		l.redactHeaders(logDataTable.Request, fields, "request_")
 		l.redactHeaders(logDataTable.OriginResponse, fields, "origin_")
 		l.redactHeaders(logDataTable.DownstreamResponse, fields, "downstream_")
+
+		if l.config.LogBody {
+			fields[RequestBody] = string(crr.body)
+			fields[ResponseBody] = string(crw.body)
+		}
 
 		l.mu.Lock()
 		defer l.mu.Unlock()

@@ -82,3 +82,41 @@ func toLogEntry(s string, defaultValue string, quote bool) string {
 	}
 	return s
 }
+
+// CommonLogFormatterWithBody provides formatting in the Traefik common log format and log request & response body
+type CommonLogFormatterWithBody struct{}
+
+// Format formats the log entry in the Traefik common log format
+func (f *CommonLogFormatterWithBody) Format(entry *logrus.Entry) ([]byte, error) {
+	b := &bytes.Buffer{}
+
+	var timestamp = defaultValue
+	if v, ok := entry.Data[StartUTC]; ok {
+		timestamp = v.(time.Time).Format(commonLogTimeFormat)
+	}
+
+	var elapsedMillis int64
+	if v, ok := entry.Data[Duration]; ok {
+		elapsedMillis = v.(time.Duration).Nanoseconds() / 1000000
+	}
+
+	_, err := fmt.Fprintf(b, "%s - %s [%s] \"%s %s %s\" %v %v %s %s %v %s %s %dms %s %s\n",
+		toLog(entry.Data, ClientHost, defaultValue, false),
+		toLog(entry.Data, ClientUsername, defaultValue, false),
+		timestamp,
+		toLog(entry.Data, RequestMethod, defaultValue, false),
+		toLog(entry.Data, RequestPath, defaultValue, false),
+		toLog(entry.Data, RequestProtocol, defaultValue, false),
+		toLog(entry.Data, OriginStatus, defaultValue, true),
+		toLog(entry.Data, OriginContentSize, defaultValue, true),
+		toLog(entry.Data, "request_Referer", `"-"`, true),
+		toLog(entry.Data, "request_User-Agent", `"-"`, true),
+		toLog(entry.Data, RequestCount, defaultValue, true),
+		toLog(entry.Data, FrontendName, defaultValue, true),
+		toLog(entry.Data, BackendURL, defaultValue, true),
+		elapsedMillis,
+		toLog(entry.Data, RequestBody, `"-"`, true),
+		toLog(entry.Data, ResponseBody, `"-"`, true))
+
+	return b.Bytes(), err
+}
