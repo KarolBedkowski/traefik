@@ -678,6 +678,21 @@ TLS key
 `TRAEFIK_PROVIDERS_ZOOKEEPER_USERNAME`:  
 KV Username
 
+`TRAEFIK_SERVERSTRANSPORT_CLIENTTLS_CA`:  
+TLS CA
+
+`TRAEFIK_SERVERSTRANSPORT_CLIENTTLS_CAOPTIONAL`:  
+TLS CA.Optional (Default: ```false```)
+
+`TRAEFIK_SERVERSTRANSPORT_CLIENTTLS_CERT`:  
+TLS cert
+
+`TRAEFIK_SERVERSTRANSPORT_CLIENTTLS_INSECURESKIPVERIFY`:  
+TLS insecure skip verify (Default: ```false```)
+
+`TRAEFIK_SERVERSTRANSPORT_CLIENTTLS_KEY`:  
+TLS key
+
 `TRAEFIK_SERVERSTRANSPORT_FORWARDINGTIMEOUTS_DIALTIMEOUT`:  
 The amount of time to wait until a connection to a backend server can be established. If zero, no timeout exists. (Default: ```30```)
 

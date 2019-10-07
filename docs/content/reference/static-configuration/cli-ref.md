@@ -678,6 +678,21 @@ TLS key
 `--providers.zookeeper.username`:  
 KV Username
 
+`--serverstransport.clienttls.ca`:  
+TLS CA
+
+`--serverstransport.clienttls.caoptional`:  
+TLS CA.Optional (Default: ```false```)
+
+`--serverstransport.clienttls.cert`:  
+TLS cert
+
+`--serverstransport.clienttls.insecureskipverify`:  
+TLS insecure skip verify (Default: ```false```)
+
+`--serverstransport.clienttls.key`:  
+TLS key
+
 `--serverstransport.forwardingtimeouts.dialtimeout`:  
 The amount of time to wait until a connection to a backend server can be established. If zero, no timeout exists. (Default: ```30```)
 

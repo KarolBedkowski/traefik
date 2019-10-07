@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
@@ -70,6 +71,16 @@ func createRoundtripper(transportConfiguration *static.ServersTransport) (http.R
 		transport.TLSClientConfig = &tls.Config{
 			InsecureSkipVerify: transportConfiguration.InsecureSkipVerify,
 			RootCAs:            createRootCACertPool(transportConfiguration.RootCAs),
+		}
+	}
+
+	// configure certificates used in connection to backend servers
+	if transportConfiguration.ClientTLS != nil {
+		ctx := log.With(context.Background(), log.Str(log.ProviderName, "clientTLS"))
+		if conf, err := transportConfiguration.ClientTLS.CreateTLSConfig(ctx); err == nil {
+			transport.TLSClientConfig = conf
+		} else {
+			return nil, err
 		}
 	}
 
