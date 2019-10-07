@@ -1,6 +1,7 @@
 package server
 
 import (
+	"context"
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
@@ -73,6 +74,16 @@ func createHTTPTransport(transportConfiguration *static.ServersTransport) (*http
 	if len(transportConfiguration.RootCAs) > 0 {
 		transport.TLSClientConfig = &tls.Config{
 			RootCAs: createRootCACertPool(transportConfiguration.RootCAs),
+		}
+	}
+
+	// configure certificates used in connection to backend servers
+	if transportConfiguration.ClientTLS != nil {
+		ctx := log.With(context.Background(), log.Str(log.ProviderName, "clientTLS"))
+		if conf, err := transportConfiguration.ClientTLS.CreateTLSConfig(ctx); err == nil {
+			transport.TLSClientConfig = conf
+		} else {
+			return nil, err
 		}
 	}
 

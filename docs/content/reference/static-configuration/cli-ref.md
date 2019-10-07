@@ -453,6 +453,21 @@ Enable Rest backend with default settings. (Default: ```false```)
 `--providers.rest.insecure`:  
 Activate REST Provider directly on the entryPoint named traefik. (Default: ```false```)
 
+`--serverstransport.clienttls.ca`:  
+TLS CA
+
+`--serverstransport.clienttls.caoptional`:  
+TLS CA.Optional (Default: ```false```)
+
+`--serverstransport.clienttls.cert`:  
+TLS cert
+
+`--serverstransport.clienttls.insecureskipverify`:  
+TLS insecure skip verify (Default: ```false```)
+
+`--serverstransport.clienttls.key`:  
+TLS key
+
 `--serverstransport.forwardingtimeouts.dialtimeout`:  
 The amount of time to wait until a connection to a backend server can be established. If zero, no timeout exists. (Default: ```30```)
 
