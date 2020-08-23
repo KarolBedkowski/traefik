@@ -110,6 +110,7 @@ type GlobalConfiguration struct {
 	Metrics                   *types.Metrics          `description:"Enable a metrics exporter" export:"true"`
 	Ping                      *ping.Handler           `description:"Enable ping" export:"true"`
 	HostResolver              *HostResolverConfig     `description:"Enable CNAME Flattening" export:"true"`
+	ClientTLS                 *types.ClientTLS        `description:"Enable client TLS support" export:"true"`
 }
 
 // WebCompatibility is a configuration to handle compatibility with deprecated web provider options
